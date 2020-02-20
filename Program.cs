@@ -11,7 +11,7 @@ namespace SlutProjektet
         static void Main(string[] args)
         {
 
-            int[,] chessBoard = new int[8, 8]; //kommatecknet avgör hur många dimensioner arrayen har. Ett "," gör det två-dimensionellt. Två ",," gör det tre.
+            int[,] chessBoard = new int[8, 8]; //kommatecknet avgör hur många dimensioner arrayen har.
 
             for (int y = 0; y < 8; y++)
             {
@@ -28,6 +28,20 @@ namespace SlutProjektet
                 }
                 Console.WriteLine();
 
+            }
+
+            int location = chessBoard[0, 0];
+
+            string input = Console.ReadLine();
+
+            while (input != "w" && input != "a" && input != "s" && input != "d")
+            {
+                input = Console.ReadLine();
+            }
+
+            if (input == "w")
+            {
+                //Skulle behöva flytta mig i arrayen i bara ett led.
             }
 
             Console.ReadLine();
