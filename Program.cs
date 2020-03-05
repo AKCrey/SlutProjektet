@@ -10,41 +10,51 @@ namespace SlutProjektet
     {
         static void Main(string[] args)
         {
-
             int[,] chessBoard = new int[8, 8]; //kommatecknet avgör hur många dimensioner arrayen har.
 
-            for (int y = 0; y < 8; y++)
-            {
-                for (int x = 0; x < 8; x++)
-                {
-                    chessBoard[0, 1] = 1;
-
-                    if (chessBoard[x, y] == 1)
-                    {
-                        Console.WriteLine("Bööö");
-                    }
-
-                    Console.Write(chessBoard[x, y]);
-                }
-                Console.WriteLine();
-
-            }
-
-            int location = chessBoard[0, 0];
+            Console.WriteLine("Press 1 for the map");
 
             string input = Console.ReadLine();
 
-            while (input != "w" && input != "a" && input != "s" && input != "d")
+            int mapKey = 0;
+
+            bool success = int.TryParse(input, out mapKey);
+
+
+            if (mapKey == 1) 
+            {
+                chessBoard = Map(chessBoard);
+            }
+
+            //int location = chessBoard[0, 0];
+
+            /*while (input != "w" && input != "a" && input != "s" && input != "d")
             {
                 input = Console.ReadLine();
             }
 
             if (input == "w")
             {
-                //Skulle behöva flytta mig i arrayen i bara ett led.
+                
+            }
+
+            Console.ReadLine();*/
+
+        }
+        static int[,] Map (int[,] chessBoard)
+        {
+            for (int y = 0; y < 8; y++)
+            {
+                for (int x = 0; x < 8; x++)
+                { 
+                    Console.Write(chessBoard[x, y]);
+                }
+                Console.WriteLine();
             }
 
             Console.ReadLine();
+
+            return chessBoard;
 
         }
     }
