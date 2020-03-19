@@ -24,27 +24,51 @@ namespace SlutProjektet
             /*int x = 0;
             int y = 0;*/
 
-            (int x, int y, int location) currentState = (0, 0, 0); //Pröva att ta bort "int location"
+            (int x, int y, int location) currentState = (0, 0, 0); //Pröva att ta bort "int location", den ska ju inte få ett värde i början. 
 
-            int location = chessBoard[currentState.x, currentState.y];
+            currentState.location = chessBoard[currentState.x, currentState.y];
 
-            while (location != 3)
+            Console.WriteLine(currentState);
+
+            Console.ReadLine();
+
+            while (currentState.location != 3)
             {
-                if (location == 0)
+                if (currentState.location == 0)
                 {
                     Console.WriteLine("0");
                     currentState = Movement(currentState, chessBoard);
+
+                    currentState.location = chessBoard[currentState.x, currentState.y];
+
+                    Console.WriteLine(currentState);
+                    Console.ReadLine();
+
                 }
-                else if (location == 1)
+                else if (currentState.location == 1)
                 {
                     Console.WriteLine("1");
                     currentState = Movement(currentState, chessBoard);
+
+                    currentState.location = chessBoard[currentState.x, currentState.y];
+
+                    Console.WriteLine(currentState);
+                    Console.ReadLine();
+
+                    Console.WriteLine(currentState);
+                    Console.ReadLine();
                 }
-                else if (location == 2)
+                else if (currentState.location == 2)
                 {
                     Console.WriteLine("2");
 
                     currentState = Movement(currentState, chessBoard);
+
+                    currentState.location = chessBoard[currentState.x, currentState.y];
+
+                    Console.WriteLine(currentState);
+                    Console.ReadLine();
+                    
                 }
             }
 
@@ -122,7 +146,11 @@ namespace SlutProjektet
                 state.location = chessBoard[state.x + 1, state.y];
             }
 
-            return state;
+            Console.WriteLine(state.location);
+
+            Console.ReadLine();
+
+            return (state.x, state.y, state.location);
         }
     }
 }
