@@ -19,30 +19,20 @@ namespace SlutProjektet
 
             int[,] chessBoard = new int[8, 8]; //kommatecknet avgör hur många dimensioner arrayen har.
 
-            chessBoard = MapKey(chessBoard);
-
-            /*int x = 0;
-            int y = 0;*/
+            /*chessBoard = MapKey(chessBoard);*/
 
             (int x, int y, int location) currentState = (0, 0, 0); //Pröva att ta bort "int location", den ska ju inte få ett värde i början. 
 
             currentState.location = chessBoard[currentState.x, currentState.y];
 
-            Console.WriteLine(currentState);
-
-            Console.ReadLine();
-
             while (currentState.location != 3)
             {
+                chessBoard = Map(chessBoard);
+
                 if (currentState.location == 0)
                 {
                     Console.WriteLine("0");
                     currentState = Movement(currentState, chessBoard);
-
-                    currentState.location = chessBoard[currentState.x, currentState.y];
-
-                    Console.WriteLine(currentState);
-                    Console.ReadLine();
 
                 }
                 else if (currentState.location == 1)
@@ -50,32 +40,21 @@ namespace SlutProjektet
                     Console.WriteLine("1");
                     currentState = Movement(currentState, chessBoard);
 
-                    currentState.location = chessBoard[currentState.x, currentState.y];
-
-                    Console.WriteLine(currentState);
-                    Console.ReadLine();
-
-                    Console.WriteLine(currentState);
-                    Console.ReadLine();
                 }
                 else if (currentState.location == 2)
                 {
                     Console.WriteLine("2");
 
                     currentState = Movement(currentState, chessBoard);
-
-                    currentState.location = chessBoard[currentState.x, currentState.y];
-
-                    Console.WriteLine(currentState);
-                    Console.ReadLine();
                     
                 }
+                Console.Clear();
             }
 
             Console.ReadLine();
 
         }
-        static int[,] MapKey (int[,] chessBoard) //Metoden för klicka på 1 för att anropa Map metoden
+        /*static int[,] MapKey (int[,] chessBoard) //Metoden för klicka på 1 för att anropa Map metoden
         {
             Console.WriteLine("Press 1 for the map");
 
@@ -91,7 +70,7 @@ namespace SlutProjektet
             }
 
             return chessBoard;
-        }
+        }Just nu har jag inget behov av att detta. Kartan ska istället visas hela tiden*/
         static int[,] Map (int[,] chessBoard) //Visar kartan.
         {
             Random generator = new Random();
@@ -113,42 +92,72 @@ namespace SlutProjektet
         }
         static (int x, int y, int location) Movement ((int x, int y, int location) state, int[,] chessBoard)
         {
-            Console.WriteLine("Press W for Up");
-            Console.WriteLine("Press A for Left");
-            Console.WriteLine("Press S for Down");
-            Console.WriteLine("Press D for Right");
+            if (state.y > 0)
+            {
+                Console.WriteLine("Press W for Up");
+            }
+            
+            if (state.x > 0)
+            {
+                Console.WriteLine("Press A for Left");
+            }
+            
+            if (state.y < 7)
+            {
+                Console.WriteLine("Press S for Down");
+            }
+            
+            if (state.x < 7)
+            {
+                Console.WriteLine("Press D for Right");
+            }
 
             string input = Console.ReadLine().ToLower().Trim();
 
             while (input != "w" && input != "a" && input != "s" && input != "d")
             {
-                Console.WriteLine("Press W for Up");
-                Console.WriteLine("Press A for Left");
-                Console.WriteLine("Press S for Down");
-                Console.WriteLine("Press D for Right");
+                if (state.y > 0)
+                {
+                    Console.WriteLine("Press W for Up");
+                }
+
+                if (state.x > 0)
+                {
+                    Console.WriteLine("Press A for Left");
+                }
+
+                if (state.y < 7)
+                {
+                    Console.WriteLine("Press S for Down");
+                }
+
+                if (state.x < 7)
+                {
+                    Console.WriteLine("Press D for Right");
+                }
+                
                 input = Console.ReadLine();
             }
 
-            if (input == "w")
+            if (input == "w" && state.y > 0)
             {
-                state.location = chessBoard[state.x, state.y - 1];
+                state.y = state.y - 1;
+
             }
-            else if (input == "a")
+            else if (input == "a" && state.x > 0)
             {
-                state.location = chessBoard[state.x - 1, state.y];
+                state.x = state.x - 1;
             }
-            else if (input == "s")
+            else if (input == "s" && state.y < 7)
             {
-                state.location = chessBoard[state.x, state.y + 1];
+                state.y = state.y + 1;
             }
-            else if (input == "d")
+            else if (input == "d" && state.x < 7)
             {
-                state.location = chessBoard[state.x + 1, state.y];
+                state.x = state.x + 1;
             }
 
-            Console.WriteLine(state.location);
-
-            Console.ReadLine();
+            state.location = chessBoard[state.x, state.y]; //Uppdaterar locationen utifrån vad användaren har klickat på för knapp.
 
             return (state.x, state.y, state.location);
         }
