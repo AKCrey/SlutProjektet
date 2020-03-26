@@ -19,7 +19,7 @@ namespace SlutProjektet
 
             int[,] chessBoard = new int[8, 8]; //kommatecknet avgör hur många dimensioner arrayen har.
 
-            /*chessBoard = MapKey(chessBoard);*/
+            chessBoard = Map(chessBoard);
 
             (int x, int y, int location) currentState = (0, 0, 0); //Pröva att ta bort "int location", den ska ju inte få ett värde i början. 
 
@@ -27,7 +27,7 @@ namespace SlutProjektet
 
             while (currentState.location != 3)
             {
-                chessBoard = Map(chessBoard);
+                //chessBoard = Map(chessBoard);
 
                 if (currentState.location == 0)
                 {
@@ -48,7 +48,7 @@ namespace SlutProjektet
                     currentState = Movement(currentState, chessBoard);
                     
                 }
-                Console.Clear();
+                //Console.Clear();
             }
 
             Console.ReadLine();
