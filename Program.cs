@@ -16,53 +16,92 @@ namespace SlutProjektet
             //Minesweeper
 
             Random generator = new Random();
-
-            int playerHP = 50;
-
+            
             int[,] chessBoard = new int[8, 8]; //kommatecknet avgör hur många dimensioner arrayen har.
 
-            chessBoard = Map(chessBoard);
+            Console.WriteLine("Press Y to start");
 
-            Console.Clear();
+            string goAgane = Console.ReadLine().ToLower().Trim();
 
-            (int x, int y, int location) currentState = (0, 0, 0); //Pröva att ta bort "int location", den ska ju inte få ett värde i början. 
-
-            currentState.location = chessBoard[currentState.x, currentState.y];
-
-            while (currentState.location != 3 || playerHP <= 0)
+            if (goAgane != "y") //Om man bestämmer sig för att inte skriva in Y så får man skylla sig själv
             {
+                Console.WriteLine("Well then, get lost");
+            }
+
+            while (goAgane == "y")
+            {
+                int playerHP = 50;
+
                 for (int y = 0; y < 8; y++)
                 {
                     for (int x = 0; x < 8; x++)
                     {
+                        chessBoard[x, y] = generator.Next(3);
                         Console.Write(chessBoard[x, y]);
                     }
                     Console.WriteLine();
                 }
 
-                if (currentState.location == 0)
-                {
-                    Console.WriteLine("0");
-                    currentState = Movement(currentState, chessBoard);
+                Console.Clear(); //Den måste ha skapats för att jag ska kunna referera till den senare, men eftersom jag vill ha en i loopen så vill jag cleara den här. 
 
-                }
-                else if (currentState.location == 1)
-                {
-                    Console.WriteLine("1");
-                    currentState = Movement(currentState, chessBoard);
+                (int x, int y, int location) currentState = (0, 0, 0); //Pröva att ta bort "int location", den ska ju inte få ett värde i början. 
 
-                }
-                else if (currentState.location == 2)
-                {
-                    Console.WriteLine("2");
+                currentState.location = chessBoard[currentState.x, currentState.y];
 
-                    currentState = Movement(currentState, chessBoard);
+                while (currentState.location != 3)
+                {
+                    if (currentState.location != 3 )
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                    }
                     
-                }
-                Console.Clear();
-            }
+                    chessBoard = Map(chessBoard); //Denna metod anropas vare gång loopen körs om, vilket är bra då man konstant kan se kartan. 
 
-            //Lägg in någonting som kan få spelet att köras om. 
+                    if (currentState.location == 0)
+                    {
+                        Console.WriteLine("0");
+
+                        playerHP = battle(playerHP);
+
+                        if (playerHP <= 0)
+                        {
+                            currentState.location = 3;
+                        }
+                        else
+                        {
+                            chessBoard = Map(chessBoard);
+
+                            currentState = Movement(currentState, chessBoard);
+                        }
+                                              
+                    }
+                    else if (currentState.location == 1)
+                    {
+                        Console.WriteLine("1");
+                        currentState = Movement(currentState, chessBoard);
+
+                    }
+                    else if (currentState.location == 2)
+                    {
+                        Console.WriteLine("2");
+
+                        currentState = Movement(currentState, chessBoard);
+
+                    }
+
+                    Console.Clear();
+                }
+
+                if (playerHP >= 0)
+                {
+                    Console.WriteLine("GAME OVER");
+                    Console.WriteLine("");
+                }
+                Console.WriteLine("Do you want to GO AGANE? Y/N"); //Eftersom det fortfarande är samma fråga om Y/N så kan man använda det till att göra om allt igen. 
+
+                goAgane = Console.ReadLine().Trim().ToLower();
+
+            }
 
             Console.ReadLine();
 
@@ -92,13 +131,10 @@ namespace SlutProjektet
             {
                 for (int x = 0; x < 8; x++)
                 {
-                    chessBoard[x, y] = generator.Next(3);
-                    Console.Write(chessBoard[x, y]);                   
+                    Console.Write(chessBoard[x, y]);
                 }
                 Console.WriteLine();
             }
-
-            Console.ReadLine();
 
             return chessBoard;
 
