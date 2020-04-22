@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,8 +11,7 @@ namespace SlutProjektet
     {
         static void Main(string[] args)
         {
-            
-            int[,] chessBoard = new int[8, 8]; //kommatecknet avgör hur många dimensioner arrayen har.
+            int[,] chessBoard = new int[8, 8]; //kommatecknet avgör hur många dimensioner arrayen har. Jag har valt att göra en tvådimensionell array då jag bara vill ha kartan 8x8 i storlek. Det var den tvådimensionella arrayen som gav mig idéen till hela projektet, där jag såg ett kordinatsystem som man skulle kunna röra runt sig på. 
             
             string goAgane = Start();
 
@@ -25,47 +25,7 @@ namespace SlutProjektet
 
                 currentState.location = chessBoard[currentState.x, currentState.y];
 
-                while (currentState.location != 3)
-                {
-
-                    chessBoard = Map(chessBoard); //Denna metod anropas vare gång loopen körs om, vilket är bra då man konstant kan se kartan. 
-
-                    Console.WriteLine("Your location: " + currentState.x + ", " + currentState.y);//Det här är lite fucked då 0,0 är högst upp i vänstra hörnet. 
-
-                    if (currentState.location == 0)
-                    {
-                        //Console.WriteLine("0");
-
-                        playerHP = battle(playerHP);
-
-                        if (playerHP <= 0)
-                        {
-                            currentState.location = 3; //Dags att dö
-                        }
-                        else
-                        {
-                            chessBoard = Map(chessBoard); //Eftersom kartan försvinner under striden vill jag visa den igen efter. 
-
-                            currentState = Movement(currentState, chessBoard);
-                        }
-                                              
-                    }
-                    else if (currentState.location == 1)
-                    {
-                        //Console.WriteLine("1");
-                        currentState = Movement(currentState, chessBoard);
-
-                    }
-                    else if (currentState.location == 2)
-                    {
-                        //Console.WriteLine("2");
-
-                        currentState = Movement(currentState, chessBoard);
-
-                    }
-
-                    Console.Clear();
-                }
+                playerHP = RoomLoop(chessBoard, playerHP, currentState); //Loopen för rummen. 
 
                 if (playerHP <= 0)
                 {
@@ -112,6 +72,54 @@ namespace SlutProjektet
 
             return chessBoard;
         }
+        static int RoomLoop (int[,] chessBoard, int playerHP, (int x, int y, int location) currentState )
+        {
+            while (currentState.location != 3)
+            {
+                chessBoard = Map(chessBoard); //Denna metod anropas vare gång loopen körs om, vilket är bra då man konstant kan se kartan. 
+
+                Locations(currentState);
+
+                if (currentState.location == 0)
+                {
+                    //Console.WriteLine("0");
+
+                    playerHP = Battle(playerHP); //I rum 0 finns det en strid. 
+
+                    if (playerHP <= 0)
+                    {
+                        currentState.location = 3; //Game Over
+                    }
+                    else
+                    {
+                        chessBoard = Map(chessBoard); //Eftersom kartan försvinner under striden vill jag visa den igen efter. 
+                        Locations(currentState);
+
+                        currentState = Movement(currentState, chessBoard);
+                    }
+
+                }
+                else if (currentState.location == 1)
+                {
+                    //Console.WriteLine("1");
+
+                    currentState = Movement(currentState, chessBoard);
+
+                }
+                else if (currentState.location == 2)
+                {
+                    //Console.WriteLine("2");
+
+                    currentState = Movement(currentState, chessBoard);
+
+                }
+
+                Console.Clear();
+
+            }
+
+            return playerHP;
+        }
         static int[,] Map (int[,] chessBoard) //Visar kartan.
         {
 
@@ -126,6 +134,12 @@ namespace SlutProjektet
 
             return chessBoard;
 
+        }
+        static void Locations ((int x, int y, int location) state )
+        {
+            Console.WriteLine("Coordinates: " + state.x + ", " + state.y);//Det här är lite fucked då 0,0 är högst upp i vänstra hörnet. 
+            Console.WriteLine("Currently on: " + state.location);
+            Console.WriteLine("");
         }
         static (int x, int y, int location) Movement ((int x, int y, int location) state, int[,] chessBoard)
         {
@@ -211,7 +225,7 @@ namespace SlutProjektet
 
             return input;
         }
-        static int battle(int playerHP) //Här är min strid lagrad i en metod
+        static int Battle(int playerHP) //Här är min strid lagrad i en metod
         {
             Random generator = new Random();
 
